@@ -1,4 +1,4 @@
-#iot-Runner
+# iot-Runner
 
 This node-red node produces a stream of IoT events. It uses one or more iot history files, including timestamps, combines them, and plays them back using the timestamps, providing a stream that looks like it came from multiple devices.
 
@@ -8,7 +8,7 @@ The node requires an iot-runner.cfg file. Set the path to the iot-runner.cfg fil
 
 The history files are simply composed CRLF separated json objects with timestamps and iot topic added. During playback json object becomes the message payload, the timestamp is removed from the payload, and the topic is moved to the message topic. A message ID added to the payload and is sent. The message ID is simply the order that the messages were read in before being sorted into time order. Sample history files are provided.
 
-##How it Works
+## How it Works
 
 This works as an input node, providing mulitple output messages asynchronously over time until all of the messaegs in the combined history files have been played back.
 
