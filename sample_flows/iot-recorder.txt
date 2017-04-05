@@ -1,0 +1,1 @@
+[{"id":"6c9fb096.fd87d","type":"file","z":"7c775fb4.f1d2e","name":"","filename":"sensordata.txt","appendNewline":true,"createDir":false,"overwriteFile":"false","x":543.6902770996094,"y":240.94601440429688,"wires":[]}]

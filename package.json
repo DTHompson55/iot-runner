@@ -1,0 +1,13 @@
+{
+  "name": "iot-runner",
+  "description": "iot-runner description",
+  "version": "1.0.0",    
+  "dependencies": {
+    },
+    "keywords": [ "node-red" ],
+    "node-red"     : {
+        "nodes": {
+            "iot-runner": "iot-runner/iot-runner.js"
+        }
+    }
+}
