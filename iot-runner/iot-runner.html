@@ -18,15 +18,36 @@
     </div>
 
     <div class="form-row">
-        <label for="node-input-initfile"><i class="icon-tag"></i> Init File</label>
-        <input type="text" id="node-input-initfile" placeholder="../iot-runner.cfg">
+        <label for="node-input-initfile"><i class="icon-tag"></i> Cfg File</label>
+        <input type="text" id="node-input-initfile" placeholder="../Projects/sensordata/iot-runner.cfg">
     </div>
 
-    <div class="form-tips" data-i18n="[html]iot-runner.tip"></div>
+    <div class="form-row">
+        <label for="node-input-timelimitMS"><i class="icon-tag"></i> Limit MS</label>
+        <input type="text" id="node-input-timelimitMS" placeholder="0">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-playbackRate"><i class="icon-tag"></i> Play Speed</label>
+        <input type="text" id="node-input-playbackRate" placeholder="1.0">
+    </div>
+
 </script>
+
+
 
 <script type="text/x-red" data-help-name="iot-runner">
     <p>Pressing the button on the left side of the node starts the replay of IOT messages.</p>
+
+    <p>Name : The display name of the node</p>
+
+    <p>Cfg File: The file that contains the locations of the playback files</p>
+
+    <p>LimitMS: Milliseconds of playback time, Zero is unlimited</p>
+
+    <p>Speed: Playback speed mulitplier</p>
+
+
 </script>
 
 <script type="text/javascript">
@@ -34,8 +55,11 @@
         category: 'input',
         color: '#d863d2',
         defaults: {
-            name: {value:"IoT Runner X"},   
-    		initfile: {value:"../sensordata/iot-runner.cfg"}
+            name: {value:"IoT Runner"},   
+    		initfile: {value:"../Projects/sensordata/iot-runner.cfg"},
+    		timelimitMS: {value: 0, validate:RED.validators.number()},
+    		playbackRate: {value: 1.0, validate:RED.validators.number()}
+    		    		
         },
         inputs:0,
         outputs:1,
@@ -48,9 +72,26 @@
         } ,
         
         oneditsave: function() {
-
+			        	console.log("on edit save");
             var initfile = $("#node-input-initfile").val();
-            console.log("The init file is ",initfile);
+            $.ajax({
+                url: "iot-runner-cfg/"+this.id,
+                type:"POST",
+                success: function(resp) {
+                    console.log("click resp = ",resp);
+                },
+                error: function(jqXHR,textStatus,errorThrown) {
+                    if (jqXHR.status == 404) {
+                        RED.notify(node._("common.notification.error",{message:node._("common.notification.errors.not-deployed")}),"error");
+                    } else if (jqXHR.status == 500) {
+                        RED.notify(node._("common.notification.error",{message:node._("iot-runner.errors.failed")}),"error");
+                    } else if (jqXHR.status == 0) {
+                        RED.notify(node._("common.notification.error",{message:node._("common.notification.errors.no-response")}),"error");
+                    } else {
+                        RED.notify(node._("common.notification.error",{message:node._("common.notification.errors.unexpected",{status:jqXHR.status,message:textStatus})}),"error");
+                    }
+                }
+            });
           
         },
      

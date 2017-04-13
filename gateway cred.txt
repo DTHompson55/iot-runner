@@ -1,0 +1,6 @@
+Organization ID mhfftp
+Device Type iot-runner
+Device ID iot-runner-gateway
+Authentication Method token
+Authentication Token xwxz0wNhapgnJkJC88
+
